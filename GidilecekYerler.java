@@ -1,117 +1,89 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
-
-import static java.lang.System.exit;
 
 public class GidilecekYerler {
 
     private static String sehir;
     private static Set<Veri> mekanlar = new HashSet<>();
-    private static int yer;
+    private static int yer, name;
 
-    public void main(){
-        BufferedReader inp2 = new BufferedReader(new InputStreamReader(System.in));
-        BufferedReader inp3 = new BufferedReader(new InputStreamReader(System.in));
-        BufferedReader reader;
+    public static void main(){
+        Scanner inp1 = new Scanner(System.in);
+        Scanner inp3 = new Scanner(System.in);
+
         boolean choice = true, cont=false;
         String answer;
-
-        System.out.println("=================================================================================\n");
-        System.out.println("                 Gidilecek Yerler menüsüne hoşgeldiniz.\n");
-        System.out.println("=================================================================================\n");
-
-        int n;
-
         while (choice) {
-            try {
-                System.out.println("0- ANKARA\n" +
-                        "1- ANTALYA\n" +
-                        "2- BOLU\n" +
-                        "3- BURSA\n" +
-                        "4- GAZİANTEP\n" +
-                        "5- İSTANBUL\n" +
-                        "6- İZMİR\n" +
-                        "7- MUĞLA\n" +
-                        "8- NEVŞEHİR\n" +
-                        "9- TRABZON\n" +
-                        "10- Ana menüye dön.\n");
-                System.out.println("Gitmek istediğiniz şehri şeçiniz: ");
-                reader = new BufferedReader(new InputStreamReader(System.in));  // Reading from System.in
+            boolean city = false;
 
-                n = Integer.parseInt(reader.readLine()); // Scans the next token of the input as an int.
+            while (!city){
+                city = getCity();
+            }
 
-                switch (n) {
-                    case 0:
-                        sehir = "Ankara";
-                        break;
-                    case 1:
-                        sehir = "Antalya";
-                        break;
-                    case 2:
-                        sehir = "Bolu";
-                        break;
-                    case 3:
-                        sehir = "Bursa";
-                        break;
-                    case 4:
-                        sehir = "Gaziantep";
-                        break;
-                    case 5:
-                        sehir = "istanbul";
-                        break;
-                    case 6:
-                        sehir = "izmir";
-                        break;
-                    case 7:
-                        sehir = "Mugla";
-                        break;
-                    case 8:
-                        sehir = "Nevsehir";
-                        break;
-                    case 9:
-                        sehir = "Trabzon";
-                        break;
-                    case 10:
-                        choice = false;
-                        break;
-                    default:
-                        System.out.println("Lutfen verilen sehirlerden birini seciniz.");
-                        cont = true;
-                }
-                if(!choice)
+            switch (name) {
+                case 1:
+                    sehir = "Ankara";
                     break;
-                if (cont)
-                    continue;
+                case 2:
+                    sehir = "Antalya";
+                    break;
+                case 3:
+                    sehir = "Bolu";
+                    break;
+                case 4:
+                    sehir = "Bursa";
+                    break;
+                case 5:
+                    sehir = "Gaziantep";
+                    break;
+                case 6:
+                    sehir = "istanbul";
+                    break;
+                case 7:
+                    sehir = "izmir";
+                    break;
+                case 8:
+                    sehir = "Mugla";
+                    break;
+                case 9:
+                    sehir = "Nevsehir";
+                    break;
+                case 10:
+                    sehir = "Trabzon";
+                    break;
+                default:
+                    System.out.println("Lutfen verilen sehirlerden birini seciniz.");
+                    cont = true;
+            }
 
-                boolean loop = true;
-                while(loop) {
-                    System.out.print("Nereye gitmek istiyorsunuz?\n1 - Doğal Güzellikler\n2 - Müzeler ve Ören Yerleri\n3 - Restoranlar\n>");
-                    yer = Integer.parseInt(inp2.readLine());
-                    if (yer <= 1 && yer >= 3)
-                        System.out.println("Hatali secim.");
-                    else
-                        loop = false;
-                }
-                try {
-                    reader(yer);
-                } catch (Exception e) {
-                    System.err.println("Hatali input  ");
-                }
+            if (cont)
+                continue;
+            boolean where = false, readerVar = false;
 
-                System.out.println("Baska bir işlem yapmak istiyor musunuz? (EVET/HAYIR) \n> ");
-                answer = inp3.readLine();
-                if (answer.equals("EVET") || answer.equals("Evet") || answer.equals("evet")) {
-                    choice = true;
-                    mekanlar.clear();
-                } else if (answer.equals("HAYIR") || answer.equals("Hayır") || answer.equals("hayır"))
-                    choice = false;
-            }catch (NumberFormatException e){
-                System.out.println("Lütfen geçerli bir integer değeri girin.");
-            } catch (IOException e) {
-                e.printStackTrace();
+            while (!where){
+                where = neresi();
+            }
+
+            while (!readerVar){
+                readerVar = readerFunc();
+            }
+
+            System.out.println("Baska bir işlem yapmak istiyor musunuz? (E/H) \n> ");
+            answer = inp3.nextLine();
+            if (answer.equals("E") || answer.equals("e")) {
+                choice = true;
+                mekanlar.clear();
+            } else if (answer.equals("H") || answer.equals("h")) {
+                choice = false;
+                mekanlar.clear();
+            }
+            else{
+                System.out.println("Hatali secim. Cikis yapiliyor");
+                System.out.println("Bizi seçtiğiniz için teşekkür ederiz.");
+                choice = false;
+                mekanlar.clear();
             }
         }
         System.out.println("Bizi seçtiğiniz için teşekkür ederiz.");
@@ -144,12 +116,16 @@ public class GidilecekYerler {
                 mekanlar.add(veri);
             }
         }
-
-        display();
+        boolean displayVar=false;
+        while(!displayVar){
+            displayVar = display();
+        }
     }
-    public static void display(){
+    public static boolean display(){
         Scanner scan = new Scanner(System.in);
-        int choice;
+        Scanner scan1 = new Scanner(System.in);
+
+        int choice=0;
         if (yer==1){
             int i=1;
             System.out.println(sehir + " ilimizde bulunan dogal guzellikler su sekildedir.");
@@ -158,10 +134,14 @@ public class GidilecekYerler {
                 i++;
             }
             System.out.print("Seciminiz : ");
-            choice = scan.nextInt();
-            if (choice < 1 && choice > i){
+            try{
+                choice = scan.nextInt();
+            }catch (Exception e2){
+                return false;
+            }
+            if (!(choice==1 || choice == 2 || choice == 3)){
                 System.out.println("Hatali secim.");
-                exit(1);
+                return false;
             }
             i=1;
             for (Veri v : mekanlar){
@@ -178,10 +158,15 @@ public class GidilecekYerler {
                 i++;
             }
             System.out.print("Seciminiz : ");
-            choice = scan.nextInt();
-            if (choice < 1 && choice > i){
+            try{
+                choice = scan1.nextInt();
+            }catch (Exception e1){
                 System.out.println("Hatali secim.");
-                exit(1);
+                return false;
+            }
+            if (!(choice==1 || choice == 2 || choice == 3)){
+                System.out.println("Hatali secim.");
+                return false;
             }
             i=1;
             for (Veri v : mekanlar){
@@ -198,10 +183,15 @@ public class GidilecekYerler {
                 i++;
             }
             System.out.print("Seciminiz :  ");
-            choice = scan.nextInt();
-            if (choice < 1 && choice > i){
+            try{
+                choice = scan1.nextInt();
+            }catch (Exception e1){
+                System.out.println("Hatali secim. Cikis yapiliyor.");
+                return false;
+            }
+            if (!(choice==1 || choice == 2 || choice == 3)){
                 System.out.println("Hatali secim.");
-                exit(1);
+                return false;
             }
             i=1;
             for (Veri v : mekanlar){
@@ -210,5 +200,53 @@ public class GidilecekYerler {
                 i++;
             }
         }
+        return true;
+    }
+    private static boolean neresi(){
+        Scanner inp2 = new Scanner(System.in);
+        Scanner inp4 = new Scanner(System.in);
+        System.out.print("Nereye gitmek istiyosunuz?\n1 - Doğal Güzellikler\n2 - Müzeler ve Ören Yerleri\n3 - Restoranlar\n>");
+        try {
+            yer = inp2.nextInt();
+        } catch (Exception e) {
+            return false;
+        }
+        if (!(yer == 1 || yer == 2 || yer == 3)) {
+            System.out.println("Hatali secim.");
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean readerFunc(){
+        try {
+            reader(yer);
+        } catch (Exception e) {
+            System.err.println("Hatali input  " + e);
+            return false;
+        }
+        return true;
+    }
+    private static boolean getCity(){
+        System.out.println("1- ANKARA\n" +
+                "2- ANTALYA\n" +
+                "3- BOLU\n" +
+                "4- BURSA\n" +
+                "5- GAZİANTEP\n" +
+                "6- İSTANBUL\n" +
+                "7- İZMİR\n" +
+                "8- MUĞLA\n" +
+                "9- NEVŞEHİR\n" +
+                "10- TRABZON\n");
+        System.out.println("Gitmek istediğiniz şehri şeçiniz: ");
+        Scanner reader = new Scanner(System.in);  // Reading from System.in
+
+        try {
+            name = reader.nextInt(); // Scans the next token of the input as an int.
+        } catch (Exception e) {
+            System.out.println("Sayi giriniz.");
+            return false;
+        }
+        return true;
     }
 }
